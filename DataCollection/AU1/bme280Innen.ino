@@ -25,3 +25,8 @@ float bmePressRead()
 {
     return bme.readPressure() / 100.0F;
 }
+
+float bmeHumidRead()
+{
+    return bme.readHumidity();
+}

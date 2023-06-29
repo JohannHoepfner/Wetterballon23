@@ -4,16 +4,15 @@
 
 - Arduinos:
     1. AU:
-        - Temperatur Innen
-        - Druck Innen
-        - Ozon
+        - Auswerteschaltung PT100+Feuchte
+        - BME280 innen
     2. AU:
-        - Temperatur Außen
-        - Luftfeuchte Aupen
+        - GPS BN180  
     3. AU:
+        - BME280 Außen
+        - DS18B20 Temp Außen
+    4. NMCU:
         - UV A/B/C
-    4. ESP:
-        - GPS
-
 
 - SD.ino -> Zentraler SD-Code
+- RTCTime.ino -> Zentraler SD-Code

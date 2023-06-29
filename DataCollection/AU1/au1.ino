@@ -1,30 +1,37 @@
+#include <SDWriter.h>
+#include <RTC-Time.h>
+
 void setup()
 {
-  SdInit();
+  SdInit("AU1");
   Serial.begin(9600);
   
-  ozonInit();
   bmeInit();
+  initTemp();
+  initHumid(); 
   
   initTime();
+
+  initBeep();
 }
 
 void loop()
-{  
-  // Read from Ozon Sensor
-  float ozonH, ozonL;
-  ozonRead(&ozonH, &ozonL);
-
+{
   // Read from Temp and Pressure Sensor
   float tempC = bmeTempRead();
   float pressHPa = bmePressRead();
+  float humid = bmeHumidRead();
+
+  float cTemp = readTemp();
+  float cHumid = readHumid();
 
   // Join together measurements
   String mesString 
-    = String(ozonH) + ", "
-    + String(ozonL) + ", "
+    = String(cTemp) + ", "
+    + String(cHumid) + ", "
     + String(tempC) + ", "
-    + String(pressHPa) + ", ";
+    + String(pressHPa) + ", "
+    + String(humid) + ",";
 
   // Append Time
   String saveStr = getTime() + ", " + mesString;
@@ -33,4 +40,5 @@ void loop()
   SdWrite(saveStr);
   Serial.println(saveStr);
   
+  updateBeep(pressHPa);
 }
