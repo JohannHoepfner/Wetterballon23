@@ -2,15 +2,22 @@
 
 RTC_DS1307 rtc;
 
+String getTime();
+bool initialiseClock();
+int initTime();
+
+int TimeZoneSecOffset = 7200;
+
 String getTime() {
   
   if (!rtc.isrunning()) initialiseClock();
   
 
   DateTime now = rtc.now();
+
   String nowtime = "";
 
-  nowtime += now.unixtime();
+  nowtime += (now.unixtime()-TimeZoneSecOffset);
   nowtime +=  ", ";
 
   nowtime += now.year();
@@ -29,9 +36,11 @@ String getTime() {
   return nowtime;
 }
 
-
 int initTime(){
   if (!initialiseClock()) while (1);
+  
+  rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+
   return 0;
 }
 
@@ -45,9 +54,6 @@ bool initialiseClock() {
   }
   
   if (! rtc.isrunning()) {
-
-    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-
     return true;
   }
 
