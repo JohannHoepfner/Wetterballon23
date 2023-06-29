@@ -10,16 +10,19 @@
 
 Adafruit_BME280 bme(BME_CS);
 
-int bmeInit() {
+int bmeInit()
+{
   unsigned status = bme.begin();
   return 0;
 }
 
-float bmeHumidRead() {
+float bmeHumidRead()
+{
   float humid = bme.readHumidity();
   return humid;
 }
 
-float bmePressRead() {
+float bmePressRead()
+{
   return bme.readPressure() / 100.0F;
 }

@@ -5,11 +5,11 @@ void setup()
 {
   SdInit("AU1");
   Serial.begin(9600);
-  
+
   bmeInit();
   initTemp();
-  initHumid(); 
-  
+  initHumid();
+
   initTime();
 
   initBeep();
@@ -26,12 +26,11 @@ void loop()
   float cHumid = readHumid();
 
   // Join together measurements
-  String mesString 
-    = String(cTemp) + ", "
-    + String(cHumid) + ", "
-    + String(tempC) + ", "
-    + String(pressHPa) + ", "
-    + String(humid) + ",";
+  String mesString = String(cTemp) + ", " 
+                   + String(cHumid) + ", "
+                   + String(tempC) + ", " 
+                   + String(pressHPa) + ", " 
+                   + String(humid) + ",";
 
   // Append Time
   String saveStr = getTime() + ", " + mesString;
@@ -39,6 +38,6 @@ void loop()
   // Log Data
   SdWrite(saveStr);
   Serial.println(saveStr);
-  
+
   updateBeep(pressHPa);
 }

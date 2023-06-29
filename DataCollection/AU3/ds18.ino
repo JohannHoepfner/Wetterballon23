@@ -10,7 +10,8 @@ int ds18Init()
   return 0;
 }
 
-float ds18Read(){
+float ds18Read()
+{
   sensors.requestTemperatures();
   return sensors.getTempCByIndex(0);
 }

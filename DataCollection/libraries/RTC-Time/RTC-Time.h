@@ -8,17 +8,18 @@ int initTime();
 
 int TimeZoneSecOffset = 7200;
 
-String getTime() {
-  
-  if (!rtc.isrunning()) initialiseClock();
-  
+String getTime()
+{
+
+  if (!rtc.isrunning())
+    initialiseClock();
 
   DateTime now = rtc.now();
 
   String nowtime = "";
 
-  nowtime += (now.unixtime()-TimeZoneSecOffset);
-  nowtime +=  ", ";
+  nowtime += (now.unixtime() - TimeZoneSecOffset);
+  nowtime += ", ";
 
   nowtime += now.year();
   nowtime += '-';
@@ -36,24 +37,30 @@ String getTime() {
   return nowtime;
 }
 
-int initTime(){
-  if (!initialiseClock()) while (1);
-  
+int initTime()
+{
+  if (!initialiseClock())
+    while (1)
+      ;
+
   rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
 
   return 0;
 }
 
-bool initialiseClock() {
+bool initialiseClock()
+{
   delay(50);
 
   bool begin = rtc.begin();
 
-  if (! begin) {
+  if (!begin)
+  {
     return false;
   }
-  
-  if (! rtc.isrunning()) {
+
+  if (!rtc.isrunning())
+  {
     return true;
   }
 
