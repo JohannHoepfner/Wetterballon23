@@ -1,13 +1,21 @@
 #include <SDWriter.h>
-#include <RTC-Time.h>
-
 
 void setup() {
   Serial.begin(9600);
+  while (!Serial);
+
+  SdInit("AU2.gps");
+  
   GPSinit();
 }
 
 void loop() {
-  Serial.println(GPSRead(30,2000));
-  delay(1000);
+  auto txt = GPSRead();
+  if(txt!=""){
+    Serial.println(txt);
+    int sdErr = SdWrite(txt);
+    if(sdErr){
+      Serial.println("SD Error");
+    }
+  }
 }

@@ -14,7 +14,7 @@ int SdInit(String fn)
 int SdWrite(String text)
 {
   SD.begin(sdport);
-  File file = SD.open(fileName, FILE_WRITE);
+  File file = SD.open(fileName, FILE_WRITE | O_APPEND);
   if (!file)
   {
     return 1;

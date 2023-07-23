@@ -3,7 +3,7 @@
 
 void setup()
 {
-  SdInit("AU1");
+  SdInit("AU1.csv");
   Serial.begin(9600);
 
   bmeInit();
@@ -26,8 +26,8 @@ void loop()
   float cHumid = readHumid();
 
   // Join together measurements
-  String mesString = String(cTemp) + ", " 
-                   + String(cHumid) + ", "
+  String mesString = String(cTemp,5) + ", " 
+                   + String(cHumid,5) + ", "
                    + String(tempC) + ", " 
                    + String(pressHPa) + ", " 
                    + String(humid) + ",";
@@ -36,7 +36,10 @@ void loop()
   String saveStr = getTime() + ", " + mesString;
 
   // Log Data
-  SdWrite(saveStr);
+  int sdErr = SdWrite(saveStr);
+  if(sdErr){
+    Serial.println("SD Error");
+  }
   Serial.println(saveStr);
 
   updateBeep(pressHPa);

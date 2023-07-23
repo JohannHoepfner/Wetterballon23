@@ -1,50 +1,31 @@
- // Define SoftwareSerial Connection   
-#define swsTX 3 // Transmit FROM GPS
-#define swsRX 4 // Receive TO GPS
+
 
 #include <SoftwareSerial.h>
+#include <SD.h>
 
-SoftwareSerial GPSserial(swsRX, swsTX); 
+const int GPS_RX_PIN = 4;   // GPS module RX pin connected to Arduino pin 10
+const int GPS_TX_PIN = 3;   // GPS module TX pin connected to Arduino pin 11
 
-int GPSinit(){
-  GPSserial.begin(9600);
-  return 0;
+SoftwareSerial gpsSerial(GPS_RX_PIN, GPS_TX_PIN);
+
+void GPSinit() {
+  gpsSerial.begin(9600);
+  gpsSerial.setTimeout(1000);
 }
 
-String GPSRead(int numMessages,int maxmillis){
-  int startmillis = millis();  
-  
-  String text;
-  
-  int countGGA = 0;
-  int countGLL = 0;
-  
-  while(true){
-    
-    if (GPSserial.available()) {
-      
-      String sentence = GPSserial.readStringUntil('\n');
-      
-      if (sentence.startsWith("$GNGGA"))  countGGA++;
-      if (sentence.startsWith("$GNGLL"))  countGLL++;
-      
-      text+=sentence+'\n';
-    }
-    
-    if((countGGA>=numMessages) && (countGLL>=numMessages)) break;
-
-    if(millis()>maxmillis+startmillis) break;
-
-    
+String GPSRead() {
+  if(gpsSerial.available()) {
+    String nmeaSentence = gpsSerial.readStringUntil('\n');
+    return nmeaSentence;
   }
-  return text;
+  return "";
 }
 
 
 
 /* // Define SoftwareSerial Connection   
 #define swsTX 3 // Transmit FROM GPS
-#define swsRX 4 // Receive TO GPS
+#define swsRX 4 // Receive TO GP
  
 //GPS Baud rate
 #define GPSBaud 9600 

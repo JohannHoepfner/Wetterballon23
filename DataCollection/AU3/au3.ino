@@ -1,21 +1,6 @@
 #include <SDWriter.h>
 #include <RTC-Time.h>
 
-// ---------------------------------------------------
-// ---------------------------------------------------
-// ---------------------------------------------------
-// ---------------------------------------------------
-// ---------------------------------------------------
-// ---------------------------------------------------
-// DS18 belegt SD-Pin. Umändern. Schlecht.
-// ---------------------------------------------------
-// ---------------------------------------------------
-// ---------------------------------------------------
-// ---------------------------------------------------
-// ---------------------------------------------------
-// ---------------------------------------------------
-// ---------------------------------------------------
-// ---------------------------------------------------
 
 void setup()
 {
@@ -25,7 +10,7 @@ void setup()
   Serial.begin(9600);
   while (!Serial);
 
-  SdInit();
+  SdInit("AU3.csv");
 
   ds18Init();
   bmeInit();
@@ -40,14 +25,19 @@ void loop()
 
   float tempC = ds18Read();
   float humid = bmeHumidRead();
+  float pressure = bmePressRead();
 
   // Join together measurements
-  String mesString = String(tempC) + ", " + String(humid) + ",";
+  String mesString = String(tempC) + ", " + String(humid) + "," + String(pressure) + ",";
 
   // Append Time
   String saveStr = getTime() + ", " + mesString;
 
   // Log Data
-  SdWrite(saveStr);
+  int sdErr = SdWrite(saveStr);
+  if(sdErr){
+    Serial.println("SD Error");
+  }
+  
   Serial.println(saveStr);
 }
